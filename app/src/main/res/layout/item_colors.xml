@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_colors_height"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:id="@+id/items"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/itemOne"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/itemTwo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/itemThree"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/itemFour"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/itemFive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemsTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.like.LikeButton
+            android:id="@+id/like"
+            android:layout_width="@dimen/item_colors_height"
+            android:layout_height="@dimen/item_colors_height"
+            app:icon_size="@dimen/item_icon_size"
+            app:icon_type="heart"/>
+    </LinearLayout>
+
+</LinearLayout>
