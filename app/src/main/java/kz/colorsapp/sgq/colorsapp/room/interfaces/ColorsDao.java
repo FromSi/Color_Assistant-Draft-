@@ -6,12 +6,14 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
 
 /**
  * Таблица комбо цветов
  *
- * @see ColorsDao#insert(Colors) - Добавление записи
+ * @see ColorsDao#insert(List<Colors>) - Добавление записи
  * @see ColorsDao#update(int, boolean) - Изменить статус like
  * @see ColorsDao#getColors(int[]) - Возврат конкретных строк
  *
@@ -22,11 +24,11 @@ import kz.colorsapp.sgq.colorsapp.room.table.Colors;
 @Dao
 public interface ColorsDao {
     @Insert
-    void insert(Colors colors);
+    void insert(List<Colors> colors);
 
     @Query("UPDATE `colors` SET `like`=:like WHERE `idCol`=:idCol")
     void update(int idCol, boolean like);
 
     @Query("SELECT * FROM `colors` WHERE `idCol` IN (:colorIds)")
-    List<Colors> getColors(int[] colorIds);
+    Maybe<List<Colors>> getColors(int[] colorIds);
 }

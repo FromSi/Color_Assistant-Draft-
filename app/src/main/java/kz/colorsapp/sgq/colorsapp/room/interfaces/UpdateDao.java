@@ -4,6 +4,9 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import kz.colorsapp.sgq.colorsapp.room.table.Update;
 
 /**
@@ -24,8 +27,8 @@ public interface UpdateDao {
     void insert(Update update);
 
     @Query("SELECT * FROM `update`")
-    Update getUpdate();
+    Flowable<Update> getUpdate();
 
-    @Query("UPDATE `update` SET `check`=:check WHERE `check`=:update")
-    void update(int check, int update);
+    @Query("UPDATE `update` SET `check`=:last WHERE `check`=:first")
+    void update(int first, int last);
 }
