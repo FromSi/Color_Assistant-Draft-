@@ -7,19 +7,26 @@ import java.util.List;
  *
  * @see ItemColor#colors - List цветов {3..5}
  * @see ItemColor#like - Статус строки из таблицы
+ * @see ItemColor#id - (in next commit)
  *
  * @author fromsi
- * @version 0.1
+ * @version 0.2
  */
 
 public class ItemColor {
+    private int id;
     private List<String> colors;
     private boolean like;
 
 
-    public ItemColor(List<String> colors, boolean like) {
+    public ItemColor(int id, List<String> colors, boolean like) {
+        this.id = id;
         this.colors = colors;
         this.like = like;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setLike(boolean like) {

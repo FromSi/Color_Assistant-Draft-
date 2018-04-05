@@ -16,6 +16,7 @@ import kz.colorsapp.sgq.colorsapp.room.table.Colors;
  * @see ColorsDao#insert(List<Colors>) - Добавление записи
  * @see ColorsDao#update(int, boolean) - Изменить статус like
  * @see ColorsDao#getColors(int[]) - Возврат конкретных строк
+ * @see ColorsDao#getColor() - (in next commit)
  *
  * @author fromsi
  * @version 0.1
@@ -31,4 +32,7 @@ public interface ColorsDao {
 
     @Query("SELECT * FROM `colors` WHERE `idCol` IN (:colorIds)")
     Maybe<List<Colors>> getColors(int[] colorIds);
+
+    @Query("SELECT * FROM `colors`")
+    Flowable<List<Colors>> getColor();
 }

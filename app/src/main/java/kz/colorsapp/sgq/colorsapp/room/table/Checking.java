@@ -4,21 +4,17 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
- * Таблица последнего обновления
- * локальной базы данных.
+ * Таблица последнего обновления локальной БД
  *
- * @see Update#check - Последнее обновление локальной базы данных
- *
- * @author fromsi
- * @version 0.1
+ * @see Checking#check - (in next commit)
  */
 
 @Entity
-public class Update {
+public class Checking {
     @PrimaryKey
     private int check;
 
-    public Update(int check) {
+    public Checking(int check) {
         this.check = check;
     }
 

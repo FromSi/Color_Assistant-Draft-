@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,20 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import kz.colorsapp.sgq.colorsapp.R;
+import kz.colorsapp.sgq.colorsapp.ui.adapters.interfaces.OnItemClickListener;
 import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
 
 public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterColors.HolderColors> {
 
     List<ItemColor> listItems = new ArrayList<>();
+    private OnItemClickListener clickListener;
 
     public void addItems(List<ItemColor> listItems) {
         this.listItems.addAll(listItems);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -38,7 +45,9 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
     @Override
     public void onBindViewHolder(@NonNull HolderColors holder, int position) {
         holder.setImagesView(listItems.get(position));
-        holder.setLiked(listItems.get(position).isLike());
+        holder.setLiked(listItems.get(position).getId()
+                , listItems.get(position).isLike());
+        holder.setViewButton(listItems.get(position));
         holder.onClick();
     }
 
@@ -56,6 +65,9 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
 
         @BindView(R.id.like)
         LikeButton likeButton;
+
+        @BindView(R.id.view)
+        LikeButton viewButton;
 
         @BindView(R.id.items)
         LinearLayout items;
@@ -83,8 +95,30 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
             }
         }
 
-        private void setLiked(boolean b) {
+        private void setLiked(final int id, final boolean b) {
             likeButton.setLiked(b);
+            likeButton.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    clickListener.onItemLikeClick(likeButton.getRootView(), id, true);
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    clickListener.onItemLikeClick(likeButton.getRootView(), id, false);
+                }
+            });
+
+        }
+
+        private void setViewButton(final ItemColor itemColor) {
+            viewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.onItemViewClick(likeButton.getRootView(), itemColor);
+                    viewButton.setLiked(false);
+                }
+            });
         }
 
         private void onClick() {

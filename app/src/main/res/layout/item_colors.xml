@@ -56,6 +56,14 @@
         android:visibility="gone">
 
         <com.like.LikeButton
+            android:id="@+id/view"
+            android:layout_width="@dimen/item_colors_height"
+            android:layout_height="@dimen/item_colors_height"
+            app:icon_size="@dimen/item_icon_size"
+            app:like_drawable="@drawable/ic_remove_red_eye_black_24dp_on"
+            app:unlike_drawable="@drawable/ic_remove_red_eye_black_24dp_off"/>
+
+        <com.like.LikeButton
             android:id="@+id/like"
             android:layout_width="@dimen/item_colors_height"
             android:layout_height="@dimen/item_colors_height"

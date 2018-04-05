@@ -5,26 +5,24 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import kz.colorsapp.sgq.colorsapp.infraestructure.networking.gson.ColorsGson;
 import kz.colorsapp.sgq.colorsapp.infraestructure.networking.gson.UpdateGson;
 import kz.colorsapp.sgq.colorsapp.infraestructure.networking.interfaces.ColorsAppService;
+import kz.colorsapp.sgq.colorsapp.room.table.Checking;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
-import kz.colorsapp.sgq.colorsapp.room.table.Update;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ModelBaseApi {
+public class BaseApi {
     private ColorsAppService apiService;
-    private ModelBaseLocal local;
+    private BaseLocal local;
 
     private final String URL = "https://colorsapp-sgq.herokuapp.com";
 
-    public ModelBaseApi(ModelBaseLocal local) {
+    public BaseApi(BaseLocal local) {
         super();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
@@ -47,7 +45,6 @@ public class ModelBaseApi {
                     @Override
                     public void onNext(List<ColorsGson> colorsGsons) {
                         convertColorsList(colorsGsons);
-
                     }
 
                     @Override
@@ -73,7 +70,7 @@ public class ModelBaseApi {
 
                     @Override
                     public void onNext(UpdateGson updateGson) {
-                        local.insertUpdate(new Update(Integer
+                        local.insertUpdate(new Checking(Integer
                                 .parseInt(updateGson.getCheck())));
                     }
 

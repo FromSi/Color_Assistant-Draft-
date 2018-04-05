@@ -1,13 +1,14 @@
 package kz.colorsapp.sgq.colorsapp.ui.fragment;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +17,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kz.colorsapp.sgq.colorsapp.ui.activity.ComboActivity;
 import kz.colorsapp.sgq.colorsapp.R;
-import kz.colorsapp.sgq.colorsapp.mvp.model.ColorsModelImpl;
 import kz.colorsapp.sgq.colorsapp.mvp.presenter.ColorsPresenterImpl;
 import kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ColorsPresenter;
 import kz.colorsapp.sgq.colorsapp.mvp.view.ColorsView;
-import kz.colorsapp.sgq.colorsapp.room.AppDatabase;
+import kz.colorsapp.sgq.colorsapp.ui.adapters.interfaces.OnItemClickListener;
 import kz.colorsapp.sgq.colorsapp.ui.adapters.RecyclerAdapterColors;
 import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
 
@@ -64,20 +65,21 @@ public class FragmentColors extends Fragment implements ColorsView {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter = new ColorsPresenterImpl(this);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_colors.setLayoutManager(layoutManager);
         adapterColors = new RecyclerAdapterColors();
         rv_colors.setAdapter(adapterColors);
+        onClickListenerAdapter();
     }
 
-    private void setUpLoadMoreListener(){
+    private void setUpLoadMoreListener() {
         rv_colors.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -88,10 +90,26 @@ public class FragmentColors extends Fragment implements ColorsView {
         });
     }
 
+    private void onClickListenerAdapter() {
+        adapterColors.SetOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemLikeClick(View view, int id, boolean like) {
+                Log.d("Test1", "Like " + id + " " + like);
+                presenter.onItemLikeClick(view, id, like);
+            }
+
+            @Override
+            public void onItemViewClick(View view, ItemColor itemColor) {
+                Log.d("Test1", "View");
+                presenter.onItemViewClick(view, itemColor);
+            }
+        });
+    }
+
     @OnClick(R.id.download)
-    public void onClickDownload(){
+    public void onClickDownload() {
         presenter.downloadAllDB();
-        download.setVisibility(View.GONE);
+        download.setVisibility(View.VISIBLE);
         imageDownload.setVisibility(View.GONE);
         textDownload.setVisibility(View.GONE);
         progressDownload.setVisibility(View.VISIBLE);
@@ -120,5 +138,12 @@ public class FragmentColors extends Fragment implements ColorsView {
     public void addItemsDB(List<ItemColor> colorList) {
         adapterColors.addItems(colorList);
         adapterColors.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showActivityInfo(List<String> colorList) {
+        Intent intent = new Intent(getContext(), ComboActivity.class);
+        intent.putExtra("map", (Serializable) colorList);
+        startActivity(intent);
     }
 }

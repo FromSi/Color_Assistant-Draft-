@@ -11,13 +11,15 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+
     <LinearLayout
         android:id="@+id/download"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/imageDownload"
@@ -37,7 +39,7 @@
             android:id="@+id/progressDownload"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

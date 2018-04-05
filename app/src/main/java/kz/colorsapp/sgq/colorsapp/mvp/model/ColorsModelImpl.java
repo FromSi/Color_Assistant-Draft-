@@ -3,23 +3,45 @@ package kz.colorsapp.sgq.colorsapp.mvp.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import kz.colorsapp.sgq.colorsapp.infraestructure.networking.gson.ColorsGson;
+import kz.colorsapp.sgq.colorsapp.mvp.model.base.ColorsModelBase;
 import kz.colorsapp.sgq.colorsapp.mvp.model.interfaces.ColorsModel;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
 import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
-import kz.colorsapp.sgq.colorsapp.ui.model.ModelBaseApi;
-import kz.colorsapp.sgq.colorsapp.ui.model.ModelBaseLocal;
+import kz.colorsapp.sgq.colorsapp.ui.model.BaseApi;
+import kz.colorsapp.sgq.colorsapp.ui.model.BaseLocal;
+import kz.colorsapp.sgq.colorsapp.ui.model.RandomItems;
+
+/**
+ * Model - паттерн MVP
+ * @see ColorsModel - Model
+ * @see kz.colorsapp.sgq.colorsapp.mvp.view.ColorsView - View
+ * @see kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ColorsPresenter - Presenter
+ *
+ * @author fromsi
+ * @version 0.1
+ */
 
 public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
 
     private int pageNumber = 0;
-    private boolean loading = false;
+    private boolean loading = true;
+    private RandomItems randomItems;
 
     private final int VISIBLE_THRESHOLD = 1;
 
+
     public ColorsModelImpl() {
         super();
+    }
+
+    @Override
+    public void initRandom(int size) {
+        randomItems = new RandomItems(size);
+    }
+
+    @Override
+    public int[] getNumbers() {
+        return randomItems.getNumbers();
     }
 
     @Override
@@ -38,18 +60,19 @@ public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
             if (colors.get(i).getColFive() != null)
                 stringList.add(colors.get(i).getColFive());
 
-            list.add(new ItemColor(stringList, colors.get(i).isLike()));
+            list.add(new ItemColor(colors.get(i).getIdCol(),
+                    stringList, colors.get(i).isLike()));
         }
         return list;
     }
 
     @Override
-    public ModelBaseApi getApiService() {
+    public BaseApi getApiService() {
         return getApi();
     }
 
     @Override
-    public ModelBaseLocal getLocalService() {
+    public BaseLocal getLocalService() {
         return getLocal();
     }
 

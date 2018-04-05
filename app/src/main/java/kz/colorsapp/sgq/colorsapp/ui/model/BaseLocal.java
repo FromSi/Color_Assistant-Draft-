@@ -10,13 +10,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import kz.colorsapp.sgq.colorsapp.application.App;
 import kz.colorsapp.sgq.colorsapp.room.AppDatabase;
+import kz.colorsapp.sgq.colorsapp.room.table.Checking;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
-import kz.colorsapp.sgq.colorsapp.room.table.Update;
 
-public class ModelBaseLocal {
+public class BaseLocal {
     private AppDatabase database;
 
-    public ModelBaseLocal() {
+    public BaseLocal() {
         database = App.getInstance().getDatabase();
     }
 
@@ -24,7 +24,7 @@ public class ModelBaseLocal {
         database.colorsDao().insert(colors);
     }
 
-    public void insertUpdate(Update update){
+    public void insertUpdate(Checking update){
         database.updateDao().insert(update);
     }
 
@@ -43,9 +43,9 @@ public class ModelBaseLocal {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Flowable<Update> getUpdate(){
-        return database.updateDao()
-                .getUpdate()
+    public Flowable<List<Colors>> getColor(){
+        return database.colorsDao()
+                .getColor()
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }
