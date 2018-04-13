@@ -25,10 +25,33 @@ import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
 public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterColors.HolderColors> {
 
     List<ItemColor> listItems = new ArrayList<>();
+    List<Boolean> listVisibly = new ArrayList<>();
     private OnItemClickListener clickListener;
 
     public void addItems(List<ItemColor> listItems) {
         this.listItems.addAll(listItems);
+
+        for (int i = 0; i < listItems.size(); i++) {
+            listVisibly.add(true);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        listItems.clear();
+        listItems.clear();
+    }
+
+    public void updateItems(int index) {
+        ItemColor itemColor = listItems.get(index);
+        itemColor.setLike(false);
+        listItems.set(index, itemColor);
+        notifyDataSetChanged();
+    }
+
+    public List<ItemColor> getColorItemList(){
+        return listItems;
     }
 
     public void SetOnItemClickListener(final OnItemClickListener clickListener) {
@@ -48,7 +71,16 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
         holder.setLiked(listItems.get(position).getId()
                 , listItems.get(position).isLike());
         holder.setViewButton(listItems.get(position));
-        holder.onClick();
+        holder.onLoadVisibly(listVisibly.get(position));
+        holder.items.setOnClickListener(v -> {
+            if (listVisibly.get(position)) {
+                holder.onLoadVisibly(View.GONE);
+                listVisibly.set(position, false);
+            } else {
+                holder.onLoadVisibly(View.VISIBLE);
+                listVisibly.set(position, true);
+            }
+        });
     }
 
     @Override
@@ -81,9 +113,9 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
         }
 
         private void setImagesView(ItemColor itemColor) {
-
-            for (int i = 0; i < itemColor.getColors().size(); i++) {
-                if (itemColor.getColors().get(i) != null) {
+            for (int i = 0; i < 5; i++) {
+                itemsTwo.setVisibility(View.VISIBLE);
+                if (itemColor.getColors().size() > i) {
                     listImage.get(i)
                             .setBackgroundColor(Color
                                     .parseColor(itemColor
@@ -91,6 +123,9 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
                                             .get(i)));
                     listImage.get(i)
                             .setVisibility(View.VISIBLE);
+                } else {
+                    listImage.get(i)
+                            .setVisibility(View.GONE);
                 }
             }
         }
@@ -112,25 +147,21 @@ public class RecyclerAdapterColors extends RecyclerView.Adapter<RecyclerAdapterC
         }
 
         private void setViewButton(final ItemColor itemColor) {
-            viewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickListener.onItemViewClick(likeButton.getRootView(), itemColor);
-                    viewButton.setLiked(false);
-                }
+            viewButton.setOnClickListener(v -> {
+                clickListener.onItemViewClick(likeButton.getRootView(), itemColor);
+                viewButton.setLiked(false);
             });
         }
 
-        private void onClick() {
-            items.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemsTwo.getVisibility() != View.VISIBLE)
-                        itemsTwo.setVisibility(View.VISIBLE);
-                    else
-                        itemsTwo.setVisibility(View.GONE);
-                }
-            });
+        private void onLoadVisibly(int visibly) {
+            itemsTwo.setVisibility(visibly);
+        }
+
+        private void onLoadVisibly(boolean b) {
+            if (b)
+                itemsTwo.setVisibility(View.VISIBLE);
+            else
+                itemsTwo.setVisibility(View.GONE);
         }
     }
 }

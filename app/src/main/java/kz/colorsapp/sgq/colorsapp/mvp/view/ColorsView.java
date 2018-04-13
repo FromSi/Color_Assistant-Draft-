@@ -19,8 +19,11 @@ import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
  */
 
 public interface ColorsView {
-    void showDownloadDB();
+    void showLoadDB();
     void showColorList();
     void addItemsDB(List<ItemColor> colorList);
+    List<ItemColor> getColorList();
+    void clearItemsDB();
+    void updateItemsDB(int index);
     void showActivityInfo(List<String> list);
 }

@@ -18,7 +18,6 @@ public class ItemColor {
     private List<String> colors;
     private boolean like;
 
-
     public ItemColor(int id, List<String> colors, boolean like) {
         this.id = id;
         this.colors = colors;

@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
 
 /**
@@ -34,5 +35,8 @@ public interface ColorsDao {
     Maybe<List<Colors>> getColors(int[] colorIds);
 
     @Query("SELECT * FROM `colors`")
-    Flowable<List<Colors>> getColor();
+    Maybe<List<Colors>> getColors();
+
+    @Query("SELECT * FROM `colors` WHERE `like`=:like")
+    Flowable<List<Colors>> getColors(boolean like);
 }

@@ -11,35 +11,17 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/progressDownload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/download"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/imageDownload"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_archive_black_24dp" />
-
-        <TextView
-            android:id="@+id/textDownload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/download"
-            android:textAlignment="center" />
-
-        <ProgressBar
-            android:id="@+id/progressDownload"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textNoItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textNoItem"
+        android:visibility="gone"/>
 
 </LinearLayout>

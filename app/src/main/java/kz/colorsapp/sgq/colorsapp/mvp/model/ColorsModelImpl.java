@@ -1,10 +1,15 @@
 package kz.colorsapp.sgq.colorsapp.mvp.model;
 
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import kz.colorsapp.sgq.colorsapp.mvp.model.base.ColorsModelBase;
+import io.reactivex.FlowableSubscriber;
+import io.reactivex.subscribers.DisposableSubscriber;
+import kz.colorsapp.sgq.colorsapp.infraestructure.networking.gson.ColorsGson;
 import kz.colorsapp.sgq.colorsapp.mvp.model.interfaces.ColorsModel;
+import kz.colorsapp.sgq.colorsapp.room.table.Checking;
 import kz.colorsapp.sgq.colorsapp.room.table.Colors;
 import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
 import kz.colorsapp.sgq.colorsapp.ui.model.BaseApi;
@@ -13,25 +18,47 @@ import kz.colorsapp.sgq.colorsapp.ui.model.RandomItems;
 
 /**
  * Model - паттерн MVP
- * @see ColorsModel - Model
- * @see kz.colorsapp.sgq.colorsapp.mvp.view.ColorsView - View
- * @see kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ColorsPresenter - Presenter
  *
  * @author fromsi
  * @version 0.1
+ * @see ColorsModel - Model
+ * @see kz.colorsapp.sgq.colorsapp.mvp.view.ColorsView - View
+ * @see kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ColorsPresenter - Presenter
  */
 
-public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
+public class ColorsModelImpl implements ColorsModel {
 
-    private int pageNumber = 0;
+    private int update = 1;
     private boolean loading = true;
     private RandomItems randomItems;
 
+    private BaseApi api;
+    private BaseLocal local;
+
     private final int VISIBLE_THRESHOLD = 1;
 
-
     public ColorsModelImpl() {
-        super();
+        local = new BaseLocal();
+        api = new BaseApi(local);
+        init();
+    }
+
+    private void init() {
+        local.getUpdate()
+                .subscribe(new DisposableSubscriber<Checking>() {
+                    @Override
+                    public void onNext(Checking checking) {
+                        update = checking.getCheck();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
     @Override
@@ -42,6 +69,11 @@ public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
     @Override
     public int[] getNumbers() {
         return randomItems.getNumbers();
+    }
+
+    @Override
+    public int getCheck() {
+        return update;
     }
 
     @Override
@@ -68,12 +100,12 @@ public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
 
     @Override
     public BaseApi getApiService() {
-        return getApi();
+        return api;
     }
 
     @Override
     public BaseLocal getLocalService() {
-        return getLocal();
+        return local;
     }
 
     @Override
@@ -87,17 +119,35 @@ public class ColorsModelImpl extends ColorsModelBase implements ColorsModel {
     }
 
     @Override
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    @Override
-    public void addPageNumber() {
-        pageNumber++;
+    public void setRandomSize(int size) {
+        randomItems.resize(size);
     }
 
     @Override
     public int getVisibleThreshold() {
         return VISIBLE_THRESHOLD;
+    }
+
+    @Override
+    public List<ItemColor> converterToItemColor(List<ColorsGson> list) {
+        List<ItemColor> itemColorList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            List<String> stringList = new ArrayList<>();
+            stringList.add(list.get(i).getCol1());
+            stringList.add(list.get(i).getCol2());
+            stringList.add(list.get(i).getCol3());
+
+            if (list.get(i).getCol4() != null)
+                stringList.add(list.get(i).getCol4());
+
+            if (list.get(i).getCol5() != null)
+                stringList.add(list.get(i).getCol5());
+
+            ItemColor itemColor = new ItemColor(Integer
+                    .parseInt(list.get(i).getIdCol()),
+                    stringList, false);
+            itemColorList.add(itemColor);
+        }
+        return itemColorList;
     }
 }

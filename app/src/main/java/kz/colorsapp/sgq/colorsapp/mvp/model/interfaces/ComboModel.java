@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface ComboModel {
     int getSize();
-    List<Integer> colorList();
+    List<Integer> getColorList();
     String getNameType();
     List<String> getValue();
 }

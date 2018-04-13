@@ -18,8 +18,6 @@ import kz.colorsapp.sgq.colorsapp.ui.model.ItemColor;
 
 public interface ColorsPresenter {
     void handlerColorListner(int itemCount, int lastVisibleItem);
-    void downloadAllDB();
-    void uploadLastDB();
     void onItemLikeClick(View view, int id, boolean like);
     void onItemViewClick(View view, ItemColor itemColor);
 }

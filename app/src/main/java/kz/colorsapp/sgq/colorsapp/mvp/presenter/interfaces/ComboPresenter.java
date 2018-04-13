@@ -8,4 +8,7 @@ package kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces;
  */
 
 public interface ComboPresenter {
+    void handlerTextColor(int i);
+    void handlerBackgroundColor(int i);
+    int getColor(int i);
 }

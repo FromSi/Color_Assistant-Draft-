@@ -2,5 +2,10 @@
     <string name="app_name">ColorsApp</string>
     <string name="fragmentColorsName">Colors</string>
     <string name="fragmentLikesName">Likes</string>
+    <string name="fragmentSaturationName">Saturation</string>
+    <string name="fragmentLightnessName">Lightness</string>
     <string name="download">Download is DB</string>
+    <string name="background">Background</string>
+    <string name="text">Text</string>
+    <string name="textNoItem">No combo color</string>
 </resources>

@@ -13,11 +13,16 @@ public class RandomItems {
         listCheck = new ArrayList<>();
         random = new Random(System.currentTimeMillis());
         this.limit = limit;
-        initListCheck();
+        initListCheck(limit);
     }
 
-    private void initListCheck() {
-        for (int i = 0; i < limit; i++) {
+    public void resize(int size){
+        limit = limit + size;
+        initListCheck(size);
+    }
+
+    private void initListCheck(int size) {
+        for (int i = 0; i < size; i++) {
             listCheck.add(true);
         }
     }

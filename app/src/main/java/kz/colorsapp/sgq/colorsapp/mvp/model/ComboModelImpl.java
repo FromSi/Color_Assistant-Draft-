@@ -2,19 +2,21 @@ package kz.colorsapp.sgq.colorsapp.mvp.model;
 
 import android.graphics.Color;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import kz.colorsapp.sgq.colorsapp.mvp.model.interfaces.ComboModel;
+import kz.colorsapp.sgq.colorsapp.ui.model.ColorConverterUtility;
 
 /**
  * Model - паттерн MVP
- * @see kz.colorsapp.sgq.colorsapp.mvp.model.interfaces.ComboModel - Model
- * @see kz.colorsapp.sgq.colorsapp.mvp.view.ComboView - View
- * @see kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ComboPresenter - Presenter
  *
  * @author fromsi
  * @version 0.1
+ * @see kz.colorsapp.sgq.colorsapp.mvp.model.interfaces.ComboModel - Model
+ * @see kz.colorsapp.sgq.colorsapp.mvp.view.ComboView - View
+ * @see kz.colorsapp.sgq.colorsapp.mvp.presenter.interfaces.ComboPresenter - Presenter
  */
 
 public class ComboModelImpl implements ComboModel {
@@ -33,17 +35,24 @@ public class ComboModelImpl implements ComboModel {
     }
 
     @Override
-    public List<Integer> colorList() {
+    public List<Integer> getColorList() {
         return colorList;
     }
 
     @Override
     public String getNameType() {
-        return "Hex\nRGB\nCMYK\nHSV";
+        return "Hex\nRGB\nHSV";
     }
 
     @Override
     public List<String> getValue() {
-        return null;
+        List<String> answerList = new ArrayList<>();
+        for (int i = 0; i < colorList.size(); i++) {
+            answerList.add(ColorConverterUtility
+                    .getFullAnswer(colorList.get(i)));
+        }
+        return answerList;
     }
+
+
 }

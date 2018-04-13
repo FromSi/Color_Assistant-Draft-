@@ -29,7 +29,7 @@ public interface CheckingDao {
     void insert(Checking checking);
 
     @Query("SELECT * FROM `checking`")
-    Maybe<Checking> getCheck();
+    Flowable<Checking> getCheck();
 
     @Query("UPDATE `checking` SET `check`=:last WHERE `check`=:first")
     void update(int first, int last);
